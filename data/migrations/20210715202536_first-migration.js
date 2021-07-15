@@ -41,8 +41,8 @@ exports.up = async function(knex) {
 
 exports.down = async function(knex) {
   await knex.schema
-    .dropTableIfExists('recipes')
-    .dropTableIfExists('steps')
-    .dropTableIfExists('ingredients')
-    .dropTableIfExists('steps_ingredients')
+  .dropTableIfExists('steps_ingredients')
+  .dropTableIfExists('ingredients')
+  .dropTableIfExists('steps')
+  .dropTableIfExists('recipes')
 };

@@ -18,7 +18,7 @@ const getRecipeById = async id => {
     // on i.ingredient_id = si.ingredient_id
     // where r.recipe_id = 2;
  
-    const stuff = await db
+    const unstructuredRecipe = await db
         .select(
             'r.*', 
             's.step_id', 
@@ -32,8 +32,48 @@ const getRecipeById = async id => {
         .join('steps_ingredients as si', 'si.step_id', 's.step_id')
         .leftJoin('ingredients as i', 'i.ingredient_id', 'si.ingredient_id')
         .where('r.recipe_id', id)
-    console.log(stuff)
+        .orderBy('s.step_number')
+    console.log(unstructuredRecipe)
+
+    const ingredients = unstructuredRecipe.map(item => {
         
+            if(!item["ingredient_id"]){
+                return []
+        } else {
+            return {
+                "ingredient_id": item["ingredient_id"],
+                "ingredient_name": item["ingredient_name"],
+                "quantity": item["ingredient_quantity"]
+            }
+        }
+    })
+    
+    
+    const steps = unstructuredRecipe.map(item => {
+        return {
+            "step_id": item["step_id"],
+            "step_number": item["step_number"],
+            "step_instructions": item["step_instructions"],
+            "ingredients": ingredients
+        }
+    })
+    
+    // console.log(steps)
+    
+    const recipe = {
+        "recipe_id": unstructuredRecipe[0]["recipe_id"],
+        "recipe_name": unstructuredRecipe[0]["recipe_name"],
+        "created_at": unstructuredRecipe[0]["created_at"],
+        "steps": steps
+    }
+    
+    console.log("start of recipe:", recipe)
+
+    // const ingredients = unstructuredRecipe.reducer((item, acc) => {
+    //     return {
+
+    //     }
+    // }, [])
 }
 
 module.exports = {
