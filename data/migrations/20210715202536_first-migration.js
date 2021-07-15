@@ -31,7 +31,6 @@ exports.up = async function(knex) {
             .onDelete('RESTRICT').onUpdate('RESTRICT')
         table.integer('ingredient_id')
             .unsigned()
-            .notNullable()
             .references('ingredient_id')
             .inTable('ingredients')
             .onDelete('RESTRICT').onUpdate('RESTRICT')
@@ -42,8 +41,8 @@ exports.up = async function(knex) {
 
 exports.down = async function(knex) {
   await knex.schema
-    .dropTableIfExists('steps')
     .dropTableIfExists('recipes')
+    .dropTableIfExists('steps')
     .dropTableIfExists('ingredients')
     .dropTableIfExists('steps_ingredients')
 };
