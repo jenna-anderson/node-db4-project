@@ -2,20 +2,20 @@ const db = require('../data/db-configs')
 
 const getRecipeById = async id => {
     // select 
-        // r.*, 
-        // s.step_id, 
-        // s.step_number, 
-        // s.step_instructions, 
-        // i.ingredient_id, 
-        // i.ingredient_name, 
-        // si.ingredient_quantity
+    //  r.*, 
+    //  s.step_id, 
+    //  s.step_number, 
+    //  s.step_instructions, 
+    //  i.ingredient_id, 
+    //  i.ingredient_name, 
+    //  si.ingredient_quantity
     // from recipes as r
     // join steps as s
-    // on s.recipe_id = r.recipe_id
+    //  on s.recipe_id = r.recipe_id
     // join steps_ingredients as si
-    // on si.step_id = s.step_id
+    //  on si.step_id = s.step_id
     // left join ingredients as i
-    // on i.ingredient_id = si.ingredient_id
+    //  on i.ingredient_id = si.ingredient_id
     // where r.recipe_id = 2;
  
 const unstructuredRecipe = await db
@@ -34,10 +34,9 @@ const unstructuredRecipe = await db
     .where('r.recipe_id', id)
     .orderBy('s.step_number')
 
-const ingredients = unstructuredRecipe.map(item => {
-    
-        if(!item["ingredient_id"]){
-            return []
+const ingredients = unstructuredRecipe.map(item => { 
+    if(!item["ingredient_id"]){
+        return []
     } else {
         return {
             "step_id": item["step_id"],
@@ -60,14 +59,7 @@ const steps = unstructuredRecipe.map(item => {
     }
 })
 
-const repeatStepsRecipe = {
-    "recipe_id": unstructuredRecipe[0]["recipe_id"],
-    "recipe_name": unstructuredRecipe[0]["recipe_name"],
-    "created_at": unstructuredRecipe[0]["created_at"],
-    "steps": steps
-}
-
-const filteredSteps = repeatStepsRecipe.steps.filter((step, index, steps) => 
+const filteredSteps = steps.filter((step, index, steps) => 
     index === steps.findIndex((s) => (
         s.step_id === step.step_id
     )))
