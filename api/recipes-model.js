@@ -41,6 +41,7 @@ const getRecipeById = async id => {
                 return []
         } else {
             return {
+                "step_id": item["step_id"],
                 "ingredient_id": item["ingredient_id"],
                 "ingredient_name": item["ingredient_name"],
                 "quantity": item["ingredient_quantity"]
@@ -48,13 +49,21 @@ const getRecipeById = async id => {
         }
     })
     
+    // const stepIngredients = ingredients.filter((ingredient) => {
+    //     return ingredient["step_id"] === item["step_id"]
+    // })
+
+    // console.log("test filtering", stepIngredients)
     
     const steps = unstructuredRecipe.map(item => {
+        const stepId = item["step_id"]
         return {
             "step_id": item["step_id"],
             "step_number": item["step_number"],
             "step_instructions": item["step_instructions"],
-            "ingredients": ingredients
+            "ingredients": ingredients.filter((ingredient) => {
+                return ingredient["step_id"] === stepId
+            })
         }
     })
     
@@ -68,6 +77,8 @@ const getRecipeById = async id => {
     }
     
     console.log("start of recipe:", recipe)
+
+    return recipe
 
     // const ingredients = unstructuredRecipe.reducer((item, acc) => {
     //     return {
